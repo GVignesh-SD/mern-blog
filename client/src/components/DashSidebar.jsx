@@ -25,6 +25,7 @@ function DashSidebar() {
               icon={HiUser}
               label={"User"}
               labelColor="dark"
+              as="div"
             >
               Profile
             </Sidebar.Item>
@@ -33,6 +34,7 @@ function DashSidebar() {
             icon={HiArrowSmRight}
             labelColor="dark"
             className="cursor-pointer"
+            as="div"
           >
             Sign Out
           </Sidebar.Item>
