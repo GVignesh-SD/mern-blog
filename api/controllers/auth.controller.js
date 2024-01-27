@@ -96,10 +96,11 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     } else {
+      // Fix the typo here: hasedPassword -> hashedPassword
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
-      const hasedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
       const newUser = new User({
         username:
           name.toLowerCase().split(" ").join("") +
@@ -119,5 +120,9 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     }
-  } catch (error) {}
+  } catch (error) {
+    // Handle errors appropriately
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
