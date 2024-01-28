@@ -1,3 +1,5 @@
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import {
   getDownloadURL,
   getStorage,
@@ -5,21 +7,44 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
-import { useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { app } from "../firebase";
+import { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Editor from "../components/Editor";
+import { app } from "../firebase";
 
-function CreatePost() {
+function UpdatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
+  const [content, setContent] = useState(null);
+  const { postId } = useParams();
+  useEffect(() => {
+    try {
+      const fetchPost = async () => {
+        const res = await fetch(`/api/post/getposts?postId=${postId}`);
+        const data = await res.json();
+        if (!res.ok) {
+          setPublishError(data.message);
+          return;
+        }
+        if (res.ok) {
+          setPublishError(null);
+          setFormData(data.posts[0]);
+          setContent(data.posts[0].content);
+        }
+      };
+
+      fetchPost();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [postId]);
+
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -27,10 +52,12 @@ function CreatePost() {
         return;
       }
       setImageUploadError(null);
+
       const storage = getStorage(app);
       const fileName = new Date().getTime() + "-" + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
+
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -46,7 +73,7 @@ function CreatePost() {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImageUploadProgress(null);
             setImageUploadError(null);
-            setFormData({ ...formData, image: downloadURL });
+            setFormData((prevData) => ({ ...prevData, image: downloadURL }));
           });
         }
       );
@@ -83,6 +110,7 @@ function CreatePost() {
       }
     } catch (error) {
       setPublishError("Something went wrong!");
+      console.log(error.message);
     }
   };
 
@@ -93,18 +121,26 @@ function CreatePost() {
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
-            placeholder="Tilte"
+            placeholder="Title"
             required
             id="title"
             className="flex-1"
-            onChange={(e) => {
-              setFormData({ ...formData, title: e.target.value });
-            }}
+            onChange={(e) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                title: e.target.value,
+              }))
+            }
+            value={formData.title}
           />
           <Select
             onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
+              setFormData((prevData) => ({
+                ...prevData,
+                category: e.target.value,
+              }))
             }
+            value={formData.category}
           >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
@@ -146,13 +182,7 @@ function CreatePost() {
             className="w-full h-72 object-cover"
           />
         )}
-        <ReactQuill
-          theme="snow"
-          placeholder="Write something...."
-          className="h-72 mb-12"
-          required
-          onChange={(value) => setFormData({ ...formData, content: value })}
-        />
+        <Editor value={content} onChange={(value) => setContent(value)} />
         <Button type="submit" gradientDuoTone="purpleToPink">
           Publish
         </Button>
@@ -166,4 +196,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default UpdatePost;
