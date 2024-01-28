@@ -103,24 +103,18 @@ function DashProfile() {
       [e.target.id]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
-    if (Object.keys(formData).length == 0) {
-      setUpdateUserError("No Changes Made");
-      return;
-    }
 
     if (imageFileUploading) {
-      setUpdateUserError("Please wait for image to upload");
+      setUpdateUserError("Please wait for the image to upload");
       return;
     }
 
     try {
       dispatch(updateStart());
-      console.log(currentUser);
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
@@ -129,6 +123,7 @@ function DashProfile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
