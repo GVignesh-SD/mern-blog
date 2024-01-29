@@ -13,6 +13,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
 import { app } from "../firebase";
+import { useSelector } from "react-redux";
 
 function UpdatePost() {
   const [file, setFile] = useState(null);
@@ -23,6 +24,7 @@ function UpdatePost() {
   const navigate = useNavigate();
   const [content, setContent] = useState(null);
   const { postId } = useParams();
+  const { currentUser } = useSelector((state) => state.user);
   useEffect(() => {
     try {
       const fetchPost = async () => {
@@ -85,14 +87,18 @@ function UpdatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    formData.content = content;
     try {
-      const res = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) {
@@ -183,7 +189,7 @@ function UpdatePost() {
           />
         )}
         <Editor value={content} onChange={(value) => setContent(value)} />
-        <Button type="submit" gradientDuoTone="purpleToPink">
+        <Button type="submit" gradientDuoTone="purpleToPink" className="mt-5">
           Publish
         </Button>
         {publishError && (
