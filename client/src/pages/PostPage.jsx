@@ -32,7 +32,6 @@ function PostPage() {
     fetchPost();
   }, [postSlug]);
 
-  console.log(post);
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
