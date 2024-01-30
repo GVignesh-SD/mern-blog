@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
+import { desVariants } from "../animations.js";
+import { motion } from "framer-motion";
 const Header = () => {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
@@ -52,9 +54,14 @@ const Header = () => {
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
+        <motion.span
+          initial="offscreen"
+          whileInView={"onscreen"}
+          variants={desVariants}
+          className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white"
+        >
           Jupiter
-        </span>
+        </motion.span>
         Blog
       </Link>
       <form onSubmit={handleSubmit}>
@@ -62,16 +69,16 @@ const Header = () => {
           type="text"
           placeholder="Search..."
           rightIcon={AiOutlineSearch}
-          className="hidden lg:inline"
+          className="inline"
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
           }}
         />
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+      {/* <Button className="w-12 h-10 lg:hidden" color="gray" pill>
         <AiOutlineSearch />
-      </Button>
+      </Button> */}
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-12 h-10 hidden sm:inline"
@@ -117,8 +124,8 @@ const Header = () => {
         <Navbar.Link active={path === "/about"} as={"div"}>
           <Link to="/about">About</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/projects"} as={"div"}>
-          <Link to="/projects">Projects</Link>
+        <Navbar.Link active={path === "/blogs"} as={"div"}>
+          <Link to="/blogs">Blogs</Link>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>

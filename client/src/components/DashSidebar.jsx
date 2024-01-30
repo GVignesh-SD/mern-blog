@@ -12,6 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
 
+import { motion } from "framer-motion";
+import { desVariants, tagVariants, titleVariants } from "../animations.js";
+
 function DashSidebar() {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -52,7 +55,13 @@ function DashSidebar() {
                 icon={HiChartPie}
                 as="div"
               >
-                Dashboard
+                <motion.span
+                  initial="offscreen"
+                  whileInView={"onscreen"}
+                  variants={desVariants}
+                >
+                  Dashboard
+                </motion.span>
               </Sidebar.Item>
             </Link>
           )}
@@ -65,7 +74,13 @@ function DashSidebar() {
               labelColor="dark"
               as="div"
             >
-              Profile
+              <motion.span
+                initial="offscreen"
+                whileInView={"onscreen"}
+                variants={titleVariants}
+              >
+                Profile
+              </motion.span>
             </Sidebar.Item>
           </Link>
           {currentUser.isAdmin && (
@@ -75,7 +90,13 @@ function DashSidebar() {
                 icon={HiDocumentText}
                 as="div"
               >
-                Posts
+                <motion.span
+                  initial="offscreen"
+                  whileInView={"onscreen"}
+                  variants={tagVariants}
+                >
+                  Posts
+                </motion.span>
               </Sidebar.Item>
             </Link>
           )}
@@ -86,7 +107,13 @@ function DashSidebar() {
                 icon={HiOutlineUserGroup}
                 as="div"
               >
-                Users
+                <motion.span
+                  initial="offscreen"
+                  whileInView={"onscreen"}
+                  variants={desVariants}
+                >
+                  Users
+                </motion.span>
               </Sidebar.Item>
             </Link>
           )}
@@ -97,7 +124,13 @@ function DashSidebar() {
                 icon={HiAnnotation}
                 as="div"
               >
-                Comments
+                <motion.span
+                  initial="offscreen"
+                  whileInView={"onscreen"}
+                  variants={desVariants}
+                >
+                  Comments
+                </motion.span>
               </Sidebar.Item>
             </Link>
           )}
@@ -108,7 +141,13 @@ function DashSidebar() {
             as="div"
             onClick={handleSignout}
           >
-            Sign Out
+            <motion.span
+              initial="offscreen"
+              whileInView={"onscreen"}
+              variants={desVariants}
+            >
+              Sign Out
+            </motion.span>
           </Sidebar.Item>
         </Sidebar.ItemGroup>
       </Sidebar.Items>

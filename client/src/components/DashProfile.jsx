@@ -22,6 +22,8 @@ import {
 import { useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { desVariants } from "../animations.js";
 
 function DashProfile() {
   const { currentUser, error } = useSelector((state) => state.user);
@@ -173,7 +175,14 @@ function DashProfile() {
 
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
-      <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
+      <motion.h1
+        initial="offscreen"
+        whileInView={"onscreen"}
+        variants={desVariants}
+        className="my-7 text-center font-semibold text-3xl"
+      >
+        Profile
+      </motion.h1>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col cursor-pointer gap-4"
@@ -185,7 +194,10 @@ function DashProfile() {
           ref={filePickerRef}
           hidden
         />
-        <div
+        <motion.div
+          initial="offscreen"
+          whileInView={"onscreen"}
+          variants={desVariants}
           className="relative w-32 h-32 self-center shadow-md overflow-hidden flex items-center justify-center rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
@@ -218,7 +230,7 @@ function DashProfile() {
               "opacity-60%"
             } absolute rounded-full w-full h-full object-cover border-8 border-[lightgray]`}
           />
-        </div>
+        </motion.div>
         {imageFileUploadError && (
           <Alert color="failure">{imageFileUploadError}</Alert>
         )}
@@ -270,12 +282,24 @@ function DashProfile() {
         )}
       </form>
       <div className="text-red-500 flex justify-between mt-5">
-        <span className="cursor-pointer" onClick={() => setShowModal(true)}>
+        <motion.span
+          initial="offscreen"
+          whileInView={"onscreen"}
+          variants={desVariants}
+          className="cursor-pointer"
+          onClick={() => setShowModal(true)}
+        >
           Delete Account
-        </span>
-        <span className="cursor-pointer" onClick={handleSignout}>
+        </motion.span>
+        <motion.span
+          initial="offscreen"
+          whileInView={"onscreen"}
+          variants={desVariants}
+          className="cursor-pointer"
+          onClick={handleSignout}
+        >
           Sign Out
-        </span>
+        </motion.span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">

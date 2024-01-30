@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { titleVariants } from "../animations.js";
 
 export default function PostCard({ post }) {
   return (
-    <div className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg transition-all">
+    <motion.div
+      initial="offscreen"
+      whileInView={"onscreen"}
+      variants={titleVariants}
+      className="group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg transition-all"
+    >
       <Link to={`/post/${post.slug}`}>
         <img
           src={post.image}
@@ -20,6 +27,6 @@ export default function PostCard({ post }) {
           Read article
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }

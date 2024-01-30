@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
 import { Button } from "flowbite-react";
-
+import { motion } from "framer-motion";
+import { desVariants, titleVariants } from "../animations.js";
 export default function Home() {
   const [posts, setPosts] = useState([]);
 
@@ -18,13 +18,23 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col gap-6 p-28 py-15 px-8 max-w-6xl mx-auto ">
-        <h1 className="text-3xl font-bold lg:text-6xl">
+        <motion.h1
+          initial={"offscreen"}
+          whileInView={"onscreen"}
+          variants={titleVariants}
+          className="text-3xl font-bold lg:text-6xl"
+        >
           Welcome to Jupiter Blog
-        </h1>
-        <p className="text-gray-500 text-sm sm:text-lg">
+        </motion.h1>
+        <motion.p
+          initial="offscreen"
+          whileInView={"onscreen"}
+          variants={desVariants}
+          className="text-gray-500 text-sm sm:text-lg"
+        >
           Here you'll find a variety of articles and tutorials on topics such as
           web development, software engineering, and programming languages.
-        </p>
+        </motion.p>
         <Link
           to="/search"
           className="text-xs sm:text-sm text-teal-500 font-bold hover:underline"
@@ -39,7 +49,12 @@ export default function Home() {
               <div className="flex-shrink-0 self-stretch sm:flex-basis-40 md:flex-basis-50 xl:flex-basis-60">
                 <div className="h-full">
                   <article className="h-full">
-                    <div className="h-full">
+                    <motion.div
+                      initial="offscreen"
+                      whileInView={"onscreen"}
+                      variants={desVariants}
+                      className="h-full"
+                    >
                       <img
                         className="h-full object-cover"
                         src="https://inviqa.com/sites/default/files/styles/pullout/public/2020-08/XD-1.jpeg?h=f75d236a&itok=PBoXPDmW"
@@ -47,12 +62,17 @@ export default function Home() {
                         height="412"
                         alt='""'
                       />
-                    </div>
+                    </motion.div>
                   </article>
                 </div>
               </div>
               <div className="p-6">
-                <div className="leading-relaxed">
+                <motion.div
+                  initial="offscreen"
+                  whileInView={"onscreen"}
+                  variants={desVariants}
+                  className="leading-relaxed"
+                >
                   <h2 className="leading-tight text-4xl font-bold">
                     Gateway to the Tech Universe!
                   </h2>
@@ -84,7 +104,7 @@ export default function Home() {
                       Explore Blogs
                     </Button>
                   </p>
-                </div>
+                </motion.div>
               </div>
             </div>
           </section>
